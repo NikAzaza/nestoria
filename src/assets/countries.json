@@ -1,0 +1,13 @@
+{	
+	"countries": [
+                {"name": "Australia", "lang": "en", "country": "au", "server": "https://api.nestoria.com.au", "localeName":"Australia"},
+                {"name": "Brazil", "lang": "pt", "country": "br", "server": "https://api.nestoria.com.br", "localeName":"Brasil"},
+                {"name": "Germany", "lang": "de", "country": "de", "server": "https://api.nestoria.de", "localeName":"Deutchland"},
+                {"name": "Spain", "lang": "es", "country": "es", "server": "https://api.nestoria.es", "localeName":"España"},
+                {"name": "France", "lang": "fr", "country": "fr", "server": "https://api.nestoria.fr", "localeName":"France"},
+                {"name": "India", "lang": "en", "country": "in", "server": "https://api.nestoria.in", "localeName":"India"},
+                {"name": "Italy", "lang": "it", "country": "it", "server": "https://api.nestoria.it", "localeName":"Italia"},
+                {"name": "Mexico", "lang": "es", "country": "mx", "server": "https://api.nestoria.mx", "localeName":"México"},
+                {"name": "UK", "lang": "en", "country": "uk", "server": "https://api.nestoria.co.uk", "localeName":"United Kingdom"}
+        ]
+}

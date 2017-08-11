@@ -9,7 +9,14 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        "assets/flags.png",
+        "assets/flags.min.css",
+        "assets/flags.css",
+        "assets/image.png",
+        "assets/countries.json",
+        "assets/allCities.json",
+        "assets/city.png"
       ],
       "index": "index.html",
       "main": "main.ts",
