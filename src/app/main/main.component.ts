@@ -1,32 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { Response, Http} from '@angular/http';
-import { MainService } from './main.service';
+// import { MainService } from './main.service';
 import {Subscription} from 'rxjs';
 import { AppService } from '../app.service';
 import { PreloaderService } from '../preloader.service';
+import { Router } from '@angular/router';
+import {Location} from '@angular/common';
 
 @Component({
     moduleId: module.id,
     selector: 'app-main',
     templateUrl: 'main.component.html',
     styleUrls: ['main.component.scss'],
-    providers: [MainService]
+    providers: []
 })
 export class MainComponent implements OnInit {
-    private countriesArray: Array<Object>; // array with all countries objects
-    public currentCountry: Object; // current object with server, name, language, etc
-
-    private allCities: Object; // Object with all the cities
-    private citiesOfCounry: Array<String> = []; // array with cities of current country
+    private filteredCities: Array<String> = []; // array with filtered cities
 
     public searchString: String = ''; // input[type='text']
+    private rememberedSearch: String = ''; // when (onblur) remember search string and clear her
 
-    private data: any;
+    private data: any; // Respond from server
 
     private searchHistory = []; // users search history (get from local storage)
     private locationHistory = []; // users location history (get from local storage)
-
-    private serverNotRespond = false; // when server not respond more then 5 seconds
 
     // when we click on "delete search item" remember his index and delete this element in modal
     private currentDeleteIndex = -1;
@@ -35,92 +32,72 @@ export class MainComponent implements OnInit {
     private showSearch = true;
     private showHistory = true;
 
-    private mainSpinner = true; // visible while page not load
 
-    constructor(private mainService: MainService,
+    constructor(// private mainService: MainService,
                 private appService: AppService,
-                private preloader: PreloaderService) {}
+                private preloader: PreloaderService,
+                private router: Router,
+                private location: Location) {}
 
     ngOnInit() {
-        // Init array of countries
-        let savedCountry = localStorage.getItem('country');
-        if (savedCountry) {
-            this.currentCountry = JSON.parse(savedCountry);
-        } else {
-             this.currentCountry = {'name': 'UK', 'lang': 'en', 'country': 'uk', 'server': 'https://api.nestoria.co.uk'};
-        }
-        this.mainService.getCountries().subscribe((data) => {
-            this.countriesArray = data;
-           // this.mainSpinner = false;
-           this.preloader.setMainPreloader(false);
-        });
-
-        // Init array with cities of current country
-        let savedCities = localStorage.getItem('cities');
-        if (savedCities) {
-            this.citiesOfCounry = JSON.parse(savedCities);
-        }
-        this.mainService.getCities().subscribe((data) => {
-            this.allCities = data;
-            this.citiesOfCounry = data[this.currentCountry['name']];
-        });
-
         // Init search history
         this.initSearchHistory();
         this.initLocationHistory();
     }
 
-
-    private changeCountry(index: number) {
-        this.mainSpinner = true;
-
-        setTimeout(() => {
-            if (this.countriesArray[index]) {
-                this.currentCountry = this.countriesArray[index];
-                this.citiesOfCounry = this.allCities[this.currentCountry['name']];
-
-                localStorage.setItem('country', JSON.stringify(this.currentCountry));
-                localStorage.setItem('cities', JSON.stringify(this.citiesOfCounry));
-            }
-             this.mainSpinner = false;
-        }, 10);
+    private clearSearch() {
+        this.searchString = '';
     }
 
-    private isContainPhrase(city: string, phrase: string) {
-        return (city.toUpperCase().search(phrase.toUpperCase()) > 0);
+    private clearHints() {
+        this.rememberedSearch = this.searchString;
+        this.searchString = '';
+    }
+    private filterCities(phrase: string) {
+        if (phrase.length >= 2) {
+            this.filteredCities = this.appService.citiesOfCountry.filter((element) => {
+                return (element.toLowerCase().includes(phrase.toLowerCase()));
+            });
+        }
+        this.rememberedSearch = this.searchString;
     }
     private changeHistorySection() {
         this.showHistory = !this.showHistory;
     }
     // ======================================== Search (botton 'Go') ========================================
-    private submit() {
-        if (this.searchString) {
-            this.mainService.sendRequest(this.currentCountry['server']).subscribe(data => {this.data = data; console.log(data); });
+    private submit(place: string) {
+        if (this.rememberedSearch) {
+            console.log('azaza');
+            console.log(this.rememberedSearch);
+            this.router.navigate([this.appService.currentCountry['country'], 'filter', this.rememberedSearch],
+                {queryParams: {'place_name': this.rememberedSearch}});
 
-            this.searchHistory.push({
-                'value': this.searchString,
-                'currentServer': this.currentCountry['server']}
-            );
-
-            this.rewriteSearchHistory();
-            this.searchString = '';
-
+            this.rememberedSearch = '';
         }
     }
+    // when click on search history list item
+    private searchFromHisory(index: number) {
+        let currSearch = this.searchHistory[this.searchHistory.length - 1 - index];
+        // we need change country, when query is from another country
 
-    private rewriteSearchHistory() {
-        localStorage.removeItem('searchHistory');
-        localStorage.setItem('searchHistory', JSON.stringify(this.searchHistory));
-    }
+        // if query was in another country then change country
+        if (this.appService.currentCountry['country'] !== currSearch['currentCountry']['country']) {
 
-    private deleteHistoryItem(id: number, fromSearch) {
-        if (fromSearch) {
-            this.searchHistory.splice(this.searchHistory.length - id - 1, 1);
-            this.rewriteSearchHistory();
-        } else {
-            this.locationHistory.splice(this.locationHistory.length - id - 1, 1);
-            this.rewriteLocationHistory();
+             // search position of country in array with all countries
+            let countryIndex = this.appService.allCountries.findIndex((country) => {
+                return country['country'] === currSearch['currentCountry']['country'];
+            });
+
+            // if index >=0 then change country
+            if (countryIndex) {
+                this.appService.changeCountry(countryIndex);
+            }
         }
+
+        // rewrite search history (selected query must be set on 1st position on history search)
+        this.deleteHistoryItem(index, true);
+        this.router.navigate([currSearch['currentCountry']['country'], 'filter', currSearch['value']],
+            {queryParams: currSearch['parameters']});
     }
 
     private initSearchHistory() {
@@ -132,13 +109,35 @@ export class MainComponent implements OnInit {
         }
     }
     // ========================================  Geolocation (button 'My location') ========================================
-    private getCurrentCoordinates() {
+    private searchByLocation() {
         let coordinates =  this.appService.getCurrentCoordinates();
 
-        this.searchString = coordinates['latitude'] + ', ' + coordinates['longitude'];
+        this.router.navigate([this.appService.currentCountry['country'], 'filter',
+             coordinates['latitude'] + ',' + coordinates['longitude']],
+             {queryParams: {'centre_point': coordinates['latitude'] + ',' + coordinates['longitude']}});
+    }
 
-        this.locationHistory.push({'latitude': coordinates['latitude'], 'longitude': coordinates['longitude']});
-        this.rewriteLocationHistory();
+    private searchByHistoryLocation(index: number) {
+        let historyItem = this.locationHistory[this.locationHistory.length - index - 1];
+        // we need change country, when query is from another country
+
+        // if query was in another country then change country
+        if (this.appService.currentCountry['country'] !== historyItem['country']['country']) {
+
+             // search position of country in array with all countries
+            let countryIndex = this.appService.allCountries.findIndex((country) => {
+                return country['country'] === historyItem['country']['country'];
+            });
+
+            // if index >=0 then change country
+            if (countryIndex) {
+                this.appService.changeCountry(countryIndex);
+            }
+        }
+
+        // rewrite locations history (selected locations must be set on 1st position on array)
+        this.deleteHistoryItem(index, false);
+        this.router.navigate([historyItem['country']['country'], 'filter', historyItem['coords']]);
     }
 
     private initLocationHistory() {
@@ -149,8 +148,15 @@ export class MainComponent implements OnInit {
             this.locationHistory = [];
         }
     }
-    private rewriteLocationHistory() {
-        localStorage.removeItem('locationHistory');
-        localStorage.setItem('locationHistory', JSON.stringify(this.locationHistory));
+
+    private deleteHistoryItem(id: number, fromSearch: boolean) {
+        // if it is search history
+        if (fromSearch) {
+            this.searchHistory.splice( this.searchHistory.length - id - 1, 1);
+            this.appService.rewriteSearchHistory(this.searchHistory);
+        } else { // else if it is location
+           this.locationHistory.splice(this.locationHistory.length - id - 1, 1);
+            this.appService.rewriteLocationHistory(this.locationHistory);
+        }
     }
 }

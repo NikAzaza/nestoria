@@ -19,10 +19,11 @@ export class MainService {
 http://api.nestoria.co.uk/api?
  country=uk&pretty=1&action=search_listings&encoding=json&listing_type=buy&page=1&centre_point=51.684183,-3.431481
  */
-        // return this.jsonp.get(urlWithBasicParam + 'action=metadata&encoding=json&foo=bar')
-        return this.jsonp.get(urlWithBasicParam +
-            'country=uk&pretty=1&action=search_listings&encoding=json&&guid=guid-g1-TNtcDN0ATMwkAM==,guid-g1-TNtczM2IDO5YwN==')
-            .map((res) => res.json());
+        //return this.jsonp.get(urlWithBasicParam + 'action=metadata&encoding=json&foo=bar')
+       /* return this.jsonp.request(urlWithBasicParam +
+             'action=echo& encoding = json&foo=bar'
+            // 'action=search_listings&encoding=json&place_name=London')
+            .map((res) => res.json());*/
     }
 
     getCountries(): Observable<Array<Object>> {
@@ -40,4 +41,10 @@ http://api.nestoria.co.uk/api?
         });
     }
 
+    getCitiesByCountry(country: string): Observable<Array<string>> {
+        return this.http.get('assets/allCities.json').map((resp: Response) => {
+            let citiesByCountry = resp.json()[country];
+            return citiesByCountry;
+        })
+    }
 }

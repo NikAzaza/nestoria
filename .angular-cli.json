@@ -16,7 +16,13 @@
         "assets/image.png",
         "assets/countries.json",
         "assets/allCities.json",
-        "assets/city.png"
+        "assets/city.png",
+        "assets/i18n/en.json",
+        "assets/i18n/de.json",
+        "assets/i18n/ea.json",
+        "assets/i18n/fr.json",
+        "assets/i18n/it.json",
+        "assets/i18n/pt.json"
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -26,9 +32,15 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "../node_modules/ion-rangeslider/css/normalize.css",
+        "../node_modules/ion-rangeslider/css/ion.rangeSlider.css",
+        "../node_modules/ion-rangeslider/css/ion.rangeSlider.skinModern.css"
       ],
-      "scripts": [],
+      "scripts": [
+            "../node_modules/jquery/dist/jquery.min.js", 
+            "../node_modules/ion-rangeslider/js/ion.rangeSlider.min.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

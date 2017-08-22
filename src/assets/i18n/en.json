@@ -1,0 +1,27 @@
+{
+    "app-title-begin":"The easiest way to find ",
+    "app-title-end": " property",
+    "app-parahraph":"Use the form below to search for houses to buy. You can search by place-name, postcode, or click 'My location', to search in your current location!",
+    "app-search-hint":"e.g.: ",
+    "app-search-go":"Go",
+    "app-show-history": "Show/hide history",
+    "app-search-my-location":"My location",
+    "app-search-my-locations":"My locations",
+    "app-search-recent-search":"Recent search",
+    "app-empty-search-history":"You don't have search history",
+    "app-empty-location-history":"You don't have save location",
+    "app-modal-title":"Are you sure",
+    "app-modal-paragraph":"You really want to delete this search result?",
+    "app-modal-cancel":"Cancel",
+    "app-modal-delete":"Delete",
+
+    "filter-sort1":"Relevance",
+    "filter-sort2":"Beds (fewer first)",
+    "filter-sort3":"Beds (more first)",
+    "filter-sort4":"Price (low to high)",
+    "filter-sort5":"Price (high t olow)",
+    "filter-sort6":"Newer first",
+    "filter-sort7":"oldest first",
+    "filter-sort8":"random sort",
+    "filter-sort9":"distance"
+}

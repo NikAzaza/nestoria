@@ -1,22 +1,26 @@
-<main id="main">
+<main id="main" class="py-3">
     <div class="container">
-        <div class="form-in">
-            <div class="d-flex flex-column align-items-center justify-content-center">
+        <div class="form-in main-panel">
+            <div class="d-flex justify-content-center">
                 <div class="search-panel panel mt-auto">
                     
-                    <h1 class="search-title text-center">The easiest way to find {{currentCountry['name']}} property</h1> 
-                    <p class="instuctional-text">Use the form below to search for houses to buy. You can search by place-name, postcode, or click 'My location', to search in your current location!</p>
+                    <h1 class="search-title text-center">{{'app-title-begin' | translate}} {{appService.currentCountry['localeName']}} {{'app-title-end'| translate}}</h1> 
+                    <p class="instuctional-text">{{'app-parahraph' | translate}}</p>
 
                     <div class="form-group">
                         <div class="search-wrapper">
-                            <input type="text" class="form-control" placeholder="" name="search"
-                              aria-describedby="helpId" [(ngModel)]="searchString" (keyup.enter)="submit()">
+                            <input type="text" class="form-control" placeholder="{{'app-search-hint'| translate}}{{appService.searchPlaceholder}}" 
+                              aria-describedby="helpId" [(ngModel)]="searchString" (ngModelChange)="filterCities(searchString)" 
+                               (keyup.enter)="submit(searchString)" name="search" (blur)="clearHints()">
                             
-                            <div class="hint-wrapper" [ngClass]="{'invisible': !searchString.length}">
+                            <div class="hint-wrapper" [ngClass]="{'invisible': !rememberedSearch.length&&!searchString}">
                                 <div class="search-hints">
-                                    <ul class="search-hints-list" *ngFor="let element of citiesOfCounry">
-                                        <li class="search-hint" *ngIf="isContainPhrase(element, searchString)"> 
-                                            <a href="#">{{element}}</a>
+                                    <ul class="search-hints-list" *ngFor="let element of filteredCities">
+                                        <li class="search-hint" (click)="submit(element)"> 
+                                            <a  [routerLink]="[appService.currentCountry['country'],'filter', element]"
+                                                [queryParams]="{place_name: element}">
+                                                {{element}}
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>
@@ -24,42 +28,46 @@
                         </div>
                         
                         <div class="start-search">
-                            <button class="btn btn-outline-primary" (click)="submit()">
-                                Go
+                            <button class="btn btn-outline-primary" (click)="submit(rememberedSearch)" > 
+                                {{'app-search-go' | translate}}
                             </button>
+                        
 
                             <button type="button" class="btn btn-outline-primary"
-                                [ngClass]="{'disabled': !appService.getGeolocationAvailable()}" (click)="getCurrentCoordinates()" 
-                                [disabled]="!appService.getGeolocationAvailable()">
-                                My location
+                                routerLink="[appService.currentCountry['server'], 'filter']"
+                                [ngClass]="{'disabled': !appService.getGeolocationAvailable()}" (click)="searchByLocation()" 
+                                [disabled]="!appService.getGeolocationAvailable()" >
+                                {{'app-search-my-location' | translate}}
                             </button>
                         </div>
                     </div>
                      
 
-                    <div class="form-group clearfix">
-                        <button class="btn btn-outline-primary" (click)="changeHistorySection()">
-                            Show/hide history
-                        </button>
-
+                    <div class="form-group clearfix"> 
                         <div class="change-history-wrapper">
                             <div class="change-history-list" [ngClass]="{'hidden-xl-down': !showHistory}">
-                                <label for="checkbox">My locations</label>
+                                <label for="checkbox">{{'app-search-my-locations'| translate}}</label>
                                 <input type="checkbox" class="checkbox" id="checkbox" [(ngModel)]='showSearch'/>
-                                <label for="checkbox">Recent search</label>
+                                <label for="checkbox">{{'app-search-recent-search'|translate}}</label>
                             </div>
                         </div>
+                        <button class="btn btn-outline-primary float-right mr-3" (click)="changeHistorySection()">
+                            {{'app-show-history' | translate}}
+                        </button>
                     </div>    
   
             
                     <div class="history-container" [ngClass]="{'hidden-xl-down': !showHistory}">
                          <!-- ========================================Recent search ============================== -->
                         <div class="panel recent-searches" [ngClass]="{'hidden-xl-down': !showSearch}">
-                            <h2>Recent search:</h2>
+                            <h2 class="text-center">{{'app-search-recent-search'|translate}}:</h2>
                             <div class="card">
                                 <ul class="list-group list-group-flush" [ngClass]='{invisible: !searchHistory.length}' >
                                     <li class="list-group-item" *ngFor="let request of searchHistory.slice(-5).reverse(); let numInList = index;">
-                                        <a href=''>{{request.value}}</a> 
+                                        <!-- <a [routerLink]="[appService.currentCountry['server'],'/filter']">{{request.value}}</a>  -->
+                                        <a (click)="searchFromHisory(numInList)">
+                                            {{request.value}} ( {{request.results}} )
+                                        </a>
 
                                         <!-- remember list item position  -->
                                         <button class="btn btn-outline-danger btn-sm ml-auto" 
@@ -72,7 +80,7 @@
                                 </ul>
 
                                 <p [ngClass]="{'hidden-xl-down': searchHistory.length}" class="text-center"> 
-                                    You don't have search history
+                                    {{'app-empty-search-history'| translate}}
                                 </p>
                                 <p [ngClass]="{'hidden-xl-down': !serverNotRespond }" class="text-center"> 
                                     There was a problem with your search 
@@ -82,11 +90,11 @@
 
                         <!--====================================== Last locations  =================================-->
                         <div class="panel recent-locations" [ngClass]="{'hidden-xl-down': showSearch}">
-                            <h2>Recent location:</h2>
+                            <h2 class="text-center">{{'app-search-my-location'| translate}}:</h2>
                             <div class="card">
                                 <ul class="list-group list-group-flush" [ngClass]='{invisible: !locationHistory.length}' >
                                     <li class="list-group-item" *ngFor="let location of locationHistory.slice(-5).reverse(); let numInList = index;">
-                                        <a href=''>{{location.latitude}} , {{location.longitude}}</a> 
+                                        <a  (click)="searchByHistoryLocation(numInList)">{{location.value}}</a> 
 
                                         <!-- remember list item position  -->
                                         <button class="btn btn-outline-danger btn-sm ml-auto" 
@@ -99,39 +107,38 @@
                                 </ul>
 
                                 <p [ngClass]="{'hidden-xl-down': locationHistory.length}" class="text-center"> 
-                                    You don't have save location
-                                </p>
-                                <p [ngClass]="{'hidden-xl-down': !serverNotRespond }" class="text-center"> 
-                                    There was a problem with your search 
+                                    {{'app-empty-location-history'|translate}}
                                 </p>
                             </div>
                         </div> <!-- End of last location-->
                     </div>   <!-- End of History-container -->
-                   
+                </div> 
                     
-                    <!-- ================================ Modal (delete history item) ====================  -->
-                    <div class="modal fade" id="ModalDeleteListItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-dismiss="modal">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true"></span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                You really want to delete this search result?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-danger" (click)="deleteHistoryItem(currentDeleteIndex, showSearch)" data-dismiss="modal">
-                                    Delete !
-                                </button>
-                            </div>
-                            </div>
+                <!-- ================================ Modal (delete history item) ====================  -->
+                <div class="modal fade" id="ModalDeleteListItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-dismiss="modal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">{{'app-modal-title'|translate}} ?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"></span>
+                            </button>
                         </div>
-                    </div> <!-- End of modal delete recent search-->
-                </div>
+                        <div class="modal-body">
+                            {{'app-modal-paragraph'|translate}}?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-dismiss="modal">
+                                {{'app-modal-cancel'|translate}}
+                            </button>
+                            <button type="button" class="btn btn-danger" (click)="deleteHistoryItem(currentDeleteIndex, showSearch)" data-dismiss="modal">
+                                {{'app-modal-delete'|translate}} !
+                            </button>
+                        </div>
+                        </div>
+                    </div>
+                </div> <!-- End of modal delete recent search-->
+                
             </div>    
         </div> <!-- End of form-in-->
 

@@ -13,13 +13,20 @@
     $pt: 'PT serif', serif;
     $faustina: 'Faustina', $pt;
     
-    .container>.form-in> {
-        max-height: 100%;
+    .main-panel{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        min-height: 85vh;
+        margin-bottom: 20px;
     }
-    .container>.form-in>.d-flex{
-        max-height: 700px;
+    @media (max-width: 991px) {
+        .main-panel {
+            min-height: 50vh;
+        }
     }
-    .container>.form-in>.d-flex>.search-panel {
+    .main-panel .search-panel {
         border: 2px solid #ccc;
         border-radius: 10px;
         background: #fff;
@@ -27,7 +34,7 @@
            -moz-box-shadow: 5px 5px 20px 0px rgba(170,170,170,1);
                 box-shadow: 5px 5px 20px 0px rgba(170,170,170,1);
     }
-
+    
     .search-title {
         font: 2em $faustina;
     }
@@ -45,10 +52,25 @@
     button {
         cursor: pointer;
     }
+    
     .search-panel{
         width: 60%;
         height: 100%;
     }
+    @media (max-width: 991px) {
+        .search-panel{
+            width: 80%;
+        }
+    }
+    @media (max-width: 767px) {
+        .search-panel{
+            width: 100%;
+        }
+         .main-panel {
+             margin-bottom: 40px;
+         }
+    }
+   
     .list-group-item {
         padding: 5px 20px;
     }

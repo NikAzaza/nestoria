@@ -9,7 +9,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" [routerLink]="['']">Home<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Link</a>
@@ -20,15 +20,27 @@
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
                     <div class="search">
-                        <input class="form-control mr-sm-2" type="text" placeholder="Search" [(ngModel)]="searchString" name="search">
-                        <div class="hint-wrapper" [ngClass]="{'hidden-xl-down': !searchString.length}">
-                            <div class="search-hints" *ngIf="searchString.length">
-                                <ul class="search-hints-list" *ngFor="let element of citiesOfCountry">
-                                    <li class="search-hint" *ngIf="isContainPhrase(element, searchString)"> 
-                                        <a href="#">{{element}}</a>
+                        <input class="form-control mr-sm-2" type="text" placeholder="Search" 
+                         [(ngModel)]="searchString" name="search" (ngModelChange)="filterCities(searchString)" (blur)="clearSearch()">
+                        
+                        <div class="hint-wrapper" [ngClass]="{'invisible': !rememberedSearch.length&&!searchString}">
+                            <div class="search-hints"> 
+                                <ul class="search-hints-list" [ngClass]="{'invisible': !rememberedSearch.length}"
+                                        *ngFor="let element of filteredCities">
+                                    <li class="search-hint"  (click)="test(element)"> 
+                                        <a>
+                                                {{element}}
+                                        </a>
                                     </li>
                                 </ul>
-                            </div>
+                                <p *ngIf="searchString.length>=minLength &&!filteredCities.length" class="text-center">
+                                    Results not found :(
+                                </p>
+                                <p *ngIf="searchString.length<minLength" class="text-center">
+                                    min. symbols number - {{minLength}}
+                                </p> 
+                            </div> 
+                           
                         </div>
                         <button type="button" class="btn btn-outline-primary btn-sm clear-search"
                             [ngClass]="{'invisible': !searchString.length}" (click)="clearSearch()">
@@ -36,27 +48,29 @@
                         </button>
                     </div>
                     
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="submit()">
+                        Search
+                    </button>
                 </form>
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <button class="btn btn-outline-primary">
+                        <button class="btn btn-outline-primary" [routerLink]="['favorites']">
                             Favorite
                             <i class="fa fa-heart" aria-hidden="true"></i>
                         </button>
                     </li>
                     <li class="nav-item dropdown dropdown-countries">
                         <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="flag flag-{{currentCountry.country}}"></span>
-                            <span class="country-name">{{currentCountry.localeName}}</span>
+                             <span class="flag flag-{{appService.currentCountry.country}}"></span> 
+                             <span class="country-name">{{appService.currentCountry.localeName}}</span> 
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <div *ngFor="let country of allCountries; let position = index;">
-                                <div class="dropdown-item" (click)="changeCountry(position)">
+                            <div *ngFor="let country of appService.allCountries; let position = index;">
+                                <div class="dropdown-item" (click)="appService.changeCountry(position)" >
                                     <span class="flag flag-{{country.country}}"></span>
-                                    <a  href="#">{{country.localeName}}</a>
+                                    <a routerLink=''>{{country.localeName}}</a>
                                 </div>
                                 
                             </div>
@@ -66,11 +80,11 @@
             </div>
         </nav>
         <div>
-            <nav class="breadcrumb">
-                <a class="breadcrumb-item" href="#">Home</a>
-                <a class="breadcrumb-item" href="#">Library</a>
-                <a class="breadcrumb-item" href="#">Data</a>
-                <span class="breadcrumb-item active">Bootstrap</span>
+            <nav class="breadcrumb" *ngFor="let link of crumbsArray">
+                <a class="breadcrumb-item"  [routerLink]="link['link']"
+                    [ngClass]="{'active': link['active']==='true'}">
+                    {{link['name']}}
+                </a>
             </nav>
         </div>
     </div>

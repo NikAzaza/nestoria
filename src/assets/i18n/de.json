@@ -1,0 +1,17 @@
+{
+    "app-title-begin":"Der einfachste Weg zu finden",
+    "app-title-end": " Eigentum",
+    "app-parahraph":"Verwenden Sie das untenstehende Formular, um nach Häusern zu suchen. Sie können nach Ortsnamen, Postleitzahl suchen oder auf 'Mein Standort' klicken, um in Ihrem aktuellen Standort zu suchen!",
+    "app-search-hint":"z. B.: ",
+    "app-search-go":"Gehen",
+    "app-show-history": "Historie anzeigen/verbergen",
+    "app-search-my-location":"Mein Standort",
+    "app-search-my-locations":"Meine Standorte",
+    "app-search-recent-search":"Aktuelle Suche",
+    "app-empty-search-history":"Sie haben keinen Suchverlauf",
+    "app-empty-location-history":"Sie haben keinen Speicherplatz",
+    "app-modal-title":"Bist du sicher",
+    "app-modal-paragraph":"Sie möchten dieses Suchergebnis wirklich löschen",
+    "app-modal-cancel":"Stornieren",
+    "app-modal-delete":"Löschen"
+}

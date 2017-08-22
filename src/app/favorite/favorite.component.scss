@@ -1,0 +1,49 @@
+#favorite {
+    .container {
+        background: #fff;
+    }
+    .container{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        min-height: 85vh;
+        margin-bottom: 20px;
+    }
+    @media (max-width: 991px) {
+        .container {
+            min-height: 50vh;
+        }
+    }
+    .fav-wrapper ul {
+        list-style: none;
+        display: flex;
+        
+    }
+    .card {
+        margin-bottom: 10px;
+        -webkit-box-shadow: 5px 5px 15px 0px rgba(85,85,85,1);
+           -moz-box-shadow: 5px 5px 15px 0px rgba(85,85,85,1);
+                box-shadow: 5px 5px 15px 0px rgba(85,85,85,1);
+                border: 3px solid transparent;
+                cursor: pointer;
+    }
+    
+    .card:hover {
+        border-color: #f0ad4e;
+    }
+    .item-body {
+        position: relative;
+    }
+    .btn-delete {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    #exampleModal .modal-dialog {
+        max-width: 100%;
+    }
+    .modal .container {
+        min-height: 10px;
+    }
+}
