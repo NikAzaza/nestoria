@@ -4,7 +4,7 @@
         <p>
             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" 
                 aria-expanded="false" aria-controls="collapseExample" (click)="hideFilterSection()">
-            Settings
+            {{"filter-settings"|translate}}
             </button>
         </p>
         
@@ -12,10 +12,10 @@
             <aside class="col-12 col-md-4 col-lg-3" style="border: 1px solid green;" [ngClass]="{'hidden-xl-down': !isVisibleFilters}">
                 <div class="filter-container " >
                         <div class="form-group">
-                            <p>Type</p>
-                            <label for="isBuy">Buy</label>
+                            <p>{{"filter-type"|translate}}</p>
+                            <label for="isBuy">{{"filter-buy"|translate}}</label>
                             <input type="checkbox" class="checkbox" id="isBuy" [(ngModel)]="filter.listing_type" (change)="filterChange()"/>
-                            <label for="isBuy">Rent</label>
+                            <label for="isBuy">{{"filter-rent"|translate}}</label>
                         </div>
 
                         <div class="form-group">
@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="form-group" *ngIf="countryCode!=='uk'">
-                            <p>Size, m2</p>
+                            <p>{{ "item-size" | translate}}, m2</p>
                            
                             <ion-range-slider #sizeSlider 
                                 type="double"
@@ -57,15 +57,15 @@
                         </div>
                        
                         <div class="form-group">
-                            <p>Property type</p>
-                            <label for="pr_type_0" class="btn btn-outline-success btn-sm">all<input type="radio" id="pr_type_0" class="badgebox" [(ngModel)]="filter.property_type" value="" (change)="filterChange()" name="property_type" ><span class="badge">&#10004;</span></label> 
-                            <label for="pr_type_1" class="btn btn-outline-success btn-sm">flat<input type="radio" id="pr_type_1" class="badgebox" [(ngModel)]="filter.property_type" value="flat" (change)="filterChange()" name="property_type"><span class="badge">&#10004;</span></label>  
-                            <label for="pr_type_2" class="btn btn-outline-success btn-sm">house<input type="radio" id="pr_type_2" class="badgebox" [(ngModel)]="filter.property_type" value="house" (change)="filterChange()" name="property_type"><span class="badge">&#10004;</span></label>  
+                            <p>{{"filter-prop-type"|translate}}</p>
+                            <label for="pr_type_0" class="btn btn-outline-success btn-sm">{{"filter-prop-type-0"|translate}}<input type="radio" id="pr_type_0" class="badgebox" [(ngModel)]="filter.property_type" value="" (change)="filterChange()" name="property_type" ><span class="badge">&#10004;</span></label> 
+                            <label for="pr_type_1" class="btn btn-outline-success btn-sm">{{"filter-prop-type-1"|translate}}<input type="radio" id="pr_type_1" class="badgebox" [(ngModel)]="filter.property_type" value="flat" (change)="filterChange()" name="property_type"><span class="badge">&#10004;</span></label>  
+                            <label for="pr_type_2" class="btn btn-outline-success btn-sm">{{"filter-prop-type-2"|translate}}<input type="radio" id="pr_type_2" class="badgebox" [(ngModel)]="filter.property_type" value="house" (change)="filterChange()" name="property_type"><span class="badge">&#10004;</span></label>  
                         </div>
 
                         <div class="form-group">
-                            <p>bedroom_min</p>
-                            <label *ngIf="countryCode!=='de'&& countryCode!=='fr'&&countryCode!=='it'" for="bed_0" class="btn btn-outline-success btn-sm">studio<input type="checkbox" id="bed_0" class="badgebox" [(ngModel)]="filter.bedroom[0]" (change)="filterChange(true)"><span class="badge">&#10004;</span></label> 
+                            <p>{{"filter-bedroom"|translate}}</p>
+                            <label *ngIf="countryCode!=='de'&& countryCode!=='fr'&&countryCode!=='it'" for="bed_0" class="btn btn-outline-success btn-sm">{{"filter-bedroom-0"|translate}}<input type="checkbox" id="bed_0" class="badgebox" [(ngModel)]="filter.bedroom[0]" (change)="filterChange(true)"><span class="badge">&#10004;</span></label> 
                             <label for="bed_1" class="btn btn-outline-success btn-sm">1<input type="checkbox" id="bed_1" class="badgebox" [(ngModel)]="filter.bedroom[1]" (change)="filterChange(true)"><span class="badge">&#10004;</span></label> 
                             <label for="bed_2" class="btn btn-outline-success btn-sm">2<input type="checkbox" id="bed_2" class="badgebox" [(ngModel)]="filter.bedroom[2]" (change)="filterChange(true)"><span class="badge">&#10004;</span></label> 
                             <label for="bed_3" class="btn btn-outline-success btn-sm">3<input type="checkbox" id="bed_3" class="badgebox" [(ngModel)]="filter.bedroom[3]" (change)="filterChange(true)"><span class="badge">&#10004;</span></label> 
@@ -73,7 +73,7 @@
                         
                         </div>
                         <div class="form-group" *ngIf="countryCode!=='uk'">
-                            <p>room_min</p>
+                            <p>{{ "filter-rooms"|translate}}</p>
                             <label for="room_1" class="btn btn-outline-success btn-sm">1<input type="checkbox" id="room_1" class="badgebox" [(ngModel)]="filter.room[1]" (change)="filterChange(true)"><span class="badge">&#10004;</span></label> 
                             <label for="room_2" class="btn btn-outline-success btn-sm">2<input type="checkbox" id="room_2" class="badgebox" [(ngModel)]="filter.room[2]" (change)="filterChange(true)"><span class="badge">&#10004;</span></label> 
                             <label for="room_3" class="btn btn-outline-success btn-sm">3<input type="checkbox" id="room_3" class="badgebox" [(ngModel)]="filter.room[3]" (change)="filterChange(true)"><span class="badge">&#10004;</span></label> 
@@ -81,7 +81,7 @@
                        
                         </div>
                         <div class="form-group">
-                             <p>bathroom_min</p>
+                             <p>{{"filter-bathroom"|translate}}</p>
                             <label for="bath_1" class="btn btn-outline-success btn-sm">1<input type="checkbox" id="bath_1" class="badgebox" [(ngModel)]="filter.bathroom[1]" (change)="filterChange(true)"><span class="badge">&#10004;</span></label> 
                             <label for="bath_2" class="btn btn-outline-success btn-sm">2<input type="checkbox" id="bath_2" class="badgebox" [(ngModel)]="filter.bathroom[2]" (change)="filterChange(true)"><span class="badge">&#10004;</span></label> 
                             <label for="bath_3" class="btn btn-outline-success btn-sm">3<input type="checkbox" id="bath_3" class="badgebox" [(ngModel)]="filter.bathroom[3]" (change)="filterChange(true)"><span class="badge">&#10004;</span></label> 
@@ -89,35 +89,35 @@
                        
                         </div>
                         <div class="form-group">
-                             <p>Required photo</p>
-                            <label for="isWithPhoto">No</label>
+                             <p>{{"filter-req-photo"|translate}}?</p>
+                            <label for="isWithPhoto">{{"no"|translate}}</label>
                             <input type="checkbox" class="checkbox" id="isWithPhoto" [(ngModel)]="filter.has_photo" (change)="filterChange(true)"/>
-                            <label for="isWithPhoto">Yes</label>
+                            <label for="isWithPhoto">{{"yes"|translate}}</label>
                         </div>
                         <div class="form-group">
-                             <p>Results on page</p>
+                             <p>{{"filter-result-on-page"|translate}}</p>
                             <label for="isTwenty">20</label>
                             <input type="checkbox" class="checkbox" id="isTwenty" [(ngModel)]="filter.number_of_results" (change)="filterChange(true)"/>
                             <label for="isTwenty">50</label>
                         </div>
                         
                         <div class="form-group">
-                            <p>Sort</p>
+                            <p>{{"filter-sort"|translate}}</p>
                             <select class="dropdown" [(ngModel)]="filter.sort" (change)="filterChange(true)">
-                                <option value="">sorting</option>
+                                <option value="">{{"filter-sort"|translate}}...</option>
                                 <option *ngFor="let sortType of sort" [value]="sortType.value">{{sortType.name|translate}}</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <button class="btn btn-outline-primary" (click)="clearFilter(true)">
-                                clear filter
+                               {{"filter-clear"|translate}}
                             </button>
                         </div>
                 </div>
             </aside> 
 
             <div class="col-12 col-md-8 col-lg-9" [ngClass]="{'col-md-12': !isVisibleFilters, 'col-lg-12':!isVisibleFilters}">
-                <h4 class="text-center" *ngIf="products">find results: {{numOfResults}} </h4>
+                <h4 class="text-center" *ngIf="products">{{"filter-find-res"|translate}}: {{numOfResults}} </h4>
                 <div class="row" [ngClass]="{'hidden-xl-down': serverNotRespond}">
                     <div class="col-12 text-center" *ngFor="let product of products; let position = index;"
                      [ngClass]="{'col-lg-6': !isVisibleFilters}">
@@ -136,16 +136,15 @@
                                         </div>
                                         <div class="col-7">
                                             <div class="badge badge-info">{{product.price_formatted}}</div>
-                                            <div>Tags: {{product.keywords}}</div>
-                                            <!-- <span class="hidden-sm-down">{{product.summary}}</span> -->
+                                            <div>{{"item-tags"|translate}}: {{product.keywords}}</div>
                                             
                                             <div class="hidden-xs-down" [ngClass]="{'hidden-md-down': isVisibleFilters}">
                                                 <ul class="product-info">
-                                                    <li><i class="fa fa-home" aria-hidden="true"></i> Type: {{product.property_type}}</li>
-                                                    <li><i class="fa fa-bath" aria-hidden="true"></i> Baths: {{product.bathroom_number}}</li>
-                                                    <li><i class="fa fa-bed" aria-hidden="true"></i> Beds: {{product.bedroom_number}}</li>
-                                                    <li *ngIf="countryCode!=='uk'"><i class="fa fa-cubes" aria-hidden="true"></i> Rooms: {{product.room_number}}</li>
-                                                    <li><i class="fa fa-arrows" aria-hidden="true"></i> Size:  {{product.size}} {{product.size_unit}}</li>
+                                                    <li><i class="fa fa-home" aria-hidden="true"></i> {{"item-type"|translate}}: {{product.property_type}}</li>
+                                                    <li><i class="fa fa-bath" aria-hidden="true"></i> {{"item-baths"|translate}}: {{product.bathroom_number}}</li>
+                                                    <li><i class="fa fa-bed" aria-hidden="true"></i> {{"item-beds"|translate}}: {{product.bedroom_number}}</li>
+                                                    <li *ngIf="countryCode!=='uk'"><i class="fa fa-cubes" aria-hidden="true"></i> {{"item-rooms"|translate}}: {{product.room_number}}</li>
+                                                    <li><i class="fa fa-arrows" aria-hidden="true"></i> {{"item-size"|translate}}:  {{product.size}} {{product.size_unit}}</li>
                                                 </ul>
                                             </div>
 
@@ -158,11 +157,11 @@
                             </a>
                             <button class="btn btn-outline-success" (click)="addToFavorite(position)"
                                     *ngIf="!isInFavorite(product['lister_url'])">
-                                        Add to favorite
+                                        {{"filter-add-fav"|translate}}
                             </button>
                             <button class="btn btn-outline-success" (click)="deleteFromfavorite(position)"
                                      *ngIf="isInFavorite(product['lister_url'])">
-                                        delete from favorite
+                                          {{"filter-del-fav"|translate}}
                             </button>
                             
                             <div class="card-footer text-muted">
@@ -173,7 +172,7 @@
                 </div>
 
                 <div class="row text-center" [ngClass]="{'hidden-xl-down': !serverNotRespond}">
-                    <h2>Server not respond!</h2>
+                    <h2>{{"filter-not-resp"|translate}}!</h2>
                 </div>
             </div>
         </div>
@@ -183,7 +182,7 @@
             <nav aria-label="Page navigation example" *ngIf="numOfPages>1">
                 <ul class="pagination justify-content-center" >
                     <li class="page-item">
-                        <button class="page-link" [ngClass]="{'disabled': currentPage===1}" [disabled]="currentPage===1" (click)="setPage(currentPage-1)">Previous</button>
+                        <button class="page-link" [ngClass]="{'disabled': currentPage===1}" [disabled]="currentPage===1" (click)="setPage(currentPage-1)">{{"prev"|translate}}</button>
                     </li>
 
                     <li class="page-item" *ngIf="currentPage>2" (click)="setPage(1)"><a class="page-link" >1</a></li>
@@ -200,7 +199,7 @@
                     <li class="page-item"> 
                         <button class="page-link"  (click)="setPage(currentPage+1)" 
                             [ngClass]="{'disabled':currentPage==numOfPages}" [disabled]="currentPage==numOfPages">
-                            Next
+                            {{"next"|translate}}
                         </button>
                     </li>
                 </ul>
