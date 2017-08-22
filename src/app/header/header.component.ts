@@ -53,18 +53,13 @@ export class HeaderComponent implements OnInit {
     }
 
     private test(place: string) {
-        //if filterComp then Subject
+        // if filterComp then Subject
         //     else just routerNavigate
-        let currPage = this.activatedRoute.snapshot.params['country'];
         let isOnFilter = this.router.url.indexOf('/filter/')
 
-        console.log(place);
+        console.log('test:' + place);
         if (isOnFilter > 0) {
-            // this.router.navigate([this.appService.currentCountry['country'], 'filter', place],
-            //     {queryParams: {}});
-            this.router.navigate([this.appService.currentCountry['country'], 'filter', place],
-                {queryParams: {'place_name': place}});
-             this.appService.changeNewPlace();
+            this.appService.changeNewPlace(place);
         } else {
             this.router.navigate([this.appService.currentCountry['country'], 'filter', place],
                 {queryParams: {'place_name': place}});

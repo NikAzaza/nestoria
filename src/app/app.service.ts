@@ -23,7 +23,7 @@ export class AppService {
     public searchPlaceholder = '';
 
     //  ======================= Subject for Filter.component.initNewPlace() =======================
-    public changePlaceSubject: Subject<boolean> = new Subject();
+    public changePlaceSubject: Subject<string> = new Subject();
 
     constructor(private translate: TranslateService,
                 private http: Http,
@@ -291,7 +291,7 @@ export class AppService {
     }
 
     //  ======================= SUBJECT METHODS for Filter.component.initNewPlace() =======================
-    public changeNewPlace() {
-        this.changePlaceSubject.next(true);
+    public changeNewPlace(place: string) {
+        this.changePlaceSubject.next(place);
     }
 }

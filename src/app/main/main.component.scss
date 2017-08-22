@@ -73,6 +73,11 @@
    
     .list-group-item {
         padding: 5px 20px;
+        cursor: pointer;
+    }
+    .list-group-item:hover {
+        background: #eee;
+        font-weight: 500;
     }
 
     .btn::first-letter {

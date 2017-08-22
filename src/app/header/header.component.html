@@ -11,26 +11,18 @@
                     <li class="nav-item active">
                         <a class="nav-link" [routerLink]="['']">Home<span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link 2</a>
-                    </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
                     <div class="search">
                         <input class="form-control mr-sm-2" type="text" placeholder="Search" 
                          [(ngModel)]="searchString" name="search" (ngModelChange)="filterCities(searchString)" (blur)="clearSearch()">
                         
-                        <div class="hint-wrapper" [ngClass]="{'invisible': !rememberedSearch.length&&!searchString}">
-                            <div class="search-hints"> 
-                                <ul class="search-hints-list" [ngClass]="{'invisible': !rememberedSearch.length}"
+                        <div class="hint-wrapper" [ngClass]="{'invisible': !rememberedSearch<minLength&&!searchString}">
+                            <div class="search-hints"  [ngClass]="{'invisible': searchString.length<minLength&&filteredCities.length}"> 
+                                <ul class="search-hints-list" [ngClass]="{'invisible': searchString.length<minLength}"
                                         *ngFor="let element of filteredCities">
                                     <li class="search-hint"  (click)="test(element)"> 
-                                        <a>
-                                                {{element}}
-                                        </a>
+                                        {{element}}
                                     </li>
                                 </ul>
                                 <p *ngIf="searchString.length>=minLength &&!filteredCities.length" class="text-center">

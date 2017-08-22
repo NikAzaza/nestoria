@@ -59,8 +59,12 @@ export class FilterComponent implements OnInit {
         this.initNewPlace();
 
         this.appService.changePlaceSubject.subscribe((data) => {
+            console.log('DATA:' + data);
+            this.router.navigate([this.appService.currentCountry['country'], 'filter', data],
+                {queryParams: {'place_name': data}});
             if (data) {
-                 this.filter = {
+                this.filter = {
+                    place_name: data,
                     listing_type: false,
                     price_min: null,
                     price_max: null,
@@ -75,10 +79,10 @@ export class FilterComponent implements OnInit {
                     sort: '',
                     page: 1
                 };
-                let paramFromMain = this.activatedRoute.snapshot.params['place'];
-                let parameterName;
-                (paramFromMain.indexOf(',') > 0) ? parameterName = 'centre_point' : parameterName = 'place_name';
-                this.filter[parameterName] = paramFromMain;
+                console.log("Filter:");
+                console.log(this.filter);
+                this.basicParam = {'place_name': data};
+                this.basicQueryParam = {};
                 this.filterChange(false, false);
             }
         });
@@ -144,7 +148,7 @@ export class FilterComponent implements OnInit {
         this.isVisibleFilters = !this.isVisibleFilters;
     }
 
-    // ============================ method's for slider ============================
+    // ============================ method's for sliders ============================
     private increasePrice() {
         if (this.price_max < 999999999) {
             this.price_max *= 10;
