@@ -119,4 +119,15 @@
         }
     }
 
+    .pagination li{
+        cursor: pointer;
+    }
+    .pagination li.active{
+        cursor: default;
+    }
+
+    .pagination .disabled{
+        cursor: not-allowed;
+        opacity: .5;
+    }
 }

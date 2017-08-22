@@ -17,9 +17,9 @@
                         <input class="form-control mr-sm-2" type="text" placeholder="Search" 
                          [(ngModel)]="searchString" name="search" (ngModelChange)="filterCities(searchString)" (blur)="clearSearch()">
                         
-                        <div class="hint-wrapper" [ngClass]="{'invisible': !rememberedSearch<minLength&&!searchString}">
-                            <div class="search-hints"  [ngClass]="{'invisible': searchString.length<minLength&&filteredCities.length}"> 
-                                <ul class="search-hints-list" [ngClass]="{'invisible': searchString.length<minLength}"
+                        <div class="hint-wrapper" [ngClass]="{'invisible': !rememberedSearch.length&&!searchString}">
+                            <div class="search-hints"> 
+                                <ul class="search-hints-list" [ngClass]="{'invisible': !rememberedSearch.length}"
                                         *ngFor="let element of filteredCities">
                                     <li class="search-hint"  (click)="test(element)"> 
                                         {{element}}

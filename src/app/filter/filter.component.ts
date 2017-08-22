@@ -237,7 +237,7 @@ export class FilterComponent implements OnInit {
             console.log(response);
             this.numOfResults = response['response']['total_results'];
             this.currentPage = response['response']['page'];
-            this.numOfPages = response['response']['total_pages'];
+            this.numOfPages = response['response']['total_pages'] + 1;
             this.products = response['response']['listings'];
 
             setTimeout(() => {

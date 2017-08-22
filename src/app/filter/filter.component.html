@@ -180,26 +180,26 @@
 
        
         <div class="row justify-content-center">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item" >
-                        <button class="page-link"  [ngClass]="{'disabled': currentPage===1}" [disabled]="currentPage===1" (click)="setPage(currentPage-1)">Previous</button>
+            <nav aria-label="Page navigation example" *ngIf="numOfPages>1">
+                <ul class="pagination justify-content-center" >
+                    <li class="page-item">
+                        <button class="page-link" [ngClass]="{'disabled': currentPage===1}" [disabled]="currentPage===1" (click)="setPage(currentPage-1)">Previous</button>
                     </li>
 
                     <li class="page-item" *ngIf="currentPage>2" (click)="setPage(1)"><a class="page-link" >1</a></li>
                     <li class="vertical-align-bottom" *ngIf="currentPage>3" style="padding: 15px 15px 0">...</li>
 
                     <li class="page-item" *ngIf="currentPage-1>0" (click)="setPage(currentPage-1)"><a class="page-link" >{{currentPage-1}}</a></li>
-                    <li class="page-item active" (click)="setPage(currentPage)"><a class="page-link">{{currentPage}}</a></li>
-                    <li class="page-item" *ngIf="currentPage+1<numOfPages" (click)="setPage(currentPage+1)"> <a class="page-link" >{{currentPage+1}}</a></li>
+                    <li class="page-item active" (click)="setPage(currentPage)" disabled><a class="page-link" disabled>{{currentPage}}</a></li>
+                    <li class="page-item" *ngIf="currentPage<numOfPages" (click)="setPage(currentPage+1)"> <a class="page-link" >{{currentPage+1}}</a></li>
                     
-                    <li class="vertical-align-bottom" *ngIf="currentPage+2<=numOfPages" style="padding: 15px 15px 0">...</li>
+                    <li class="vertical-align-bottom" *ngIf="currentPage+2<numOfPages" style="padding: 15px 15px 0">...</li>
                     
-                    <li class="page-item" *ngIf="currentPage+1<=numOfPages"  (click)="setPage(numOfPages)"><a class="page-link" >{{numOfPages}}</a></li>
+                    <li class="page-item" *ngIf="currentPage+1<numOfPages"  (click)="setPage(numOfPages)"><a class="page-link" >{{numOfPages}}</a></li>
                     
                     <li class="page-item"> 
                         <button class="page-link"  (click)="setPage(currentPage+1)" 
-                            [ngClass]="{'disabled':numOfPages===0}" [disabled]="numOfPages===0">
+                            [ngClass]="{'disabled':currentPage==numOfPages}" [disabled]="currentPage==numOfPages">
                             Next
                         </button>
                     </li>
